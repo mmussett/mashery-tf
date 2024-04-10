@@ -11,7 +11,7 @@ data "mashery_organization" "tf_org" {
 }
 
 resource "mashery_service" "srv" {
-  name="tf-test"
+  name_prefix="tf-test"
   iodocs_accessed_by = toset([data.mashery_role.internal_dev.id])
   organization = data.mashery_organization.tf_org.id
   description = "this service was created by Terraform Mashery Provider"
