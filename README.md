@@ -32,12 +32,8 @@ Please ensure that the Mashery v3 Go Client repository has been downloaded and s
 ```
 $ ls -ltr
 
-total 20
-
 drwxrwxr-x 14 mmussett mmussett 4096 Mar 21 09:18 mashery-v3-go-client
-
 drwxrwxr-x 15 mmussett mmussett 4096 Mar 21 16:56 hcvault-mashery-api-auth
-
 drwxrwxr-x 14 mmussett mmussett 4096 Mar 22 15:34 mashery-terraform-provider
 
 ```
@@ -51,7 +47,6 @@ Ensure that all vendor libraries are downloaded to your local golang cache by ru
 
 ```
 $ go mod tidy
-
 $ go mod vendor
 ```
 
@@ -81,27 +76,21 @@ Run make to build and install the plugin:
 $ make
 
 go build -o terraform-provider-mashery
-
 mkdir -p ~/.terraform.d/plugins/github.com/aliakseiyanchuk/mashery/0.5/linux_amd64
-
 mv terraform-provider-mashery ~/.terraform.d/plugins/github.com/aliakseiyanchuk/mashery/0.5/linux_amd64
 ```
 
 ## Hashicorp Vault Plugin
 
 The Hashicorp Vault Plugin been written by Aliaksei Yanchuk under a MIT License model and is available for download from his Github repository here: <https://github.com/aliakseiyanchuk/hcvault-mashery-api-auth>
-
 The Hashicorp Vault plugin configures Vault to be able to retrieve OAuth tokens from APIM.
-
 Run make to build and install the plugin:
 
 ```
 $ make install
 
 go build -o hcvault-mashery-api-auth_v0.5 cmd/main.go
-
 mkdir -p ./vault/plugins
-
 mv hcvault-mashery-api-auth_v0.5 ./vault/plugins
 ```
 
@@ -120,93 +109,50 @@ Example:
 $ make launch_dev_mode
 
 ./scripts/killDevVault.sh
-
 mkdir -p ./vault/plugins
-
 find ./vault/plugins -type f -exec /bin/rm {} \\;
-
 go build -o ./vault/plugins/hcvault-mashery-api-auth_v0.5 cmd/main.go
-
 vault server -dev -dev-listen-address=0.0.0.0:8200 -dev-root-token-id=root -dev-plugin-dir=./vault/plugins -log-level=trace > ./vault/dev-server.log 2>&1 &
-
 \# Let the server start-up before proceeding with the mount
-
 sleep 5
-
 echo root | vault login -address=<http://localhost:8200/> -
-
 WARNING! The VAULT_TOKEN environment variable is set! The value of this
+variable will take precedence; if this is unwanted please unset VAULT_TOKEN or update its value accordingly.
 
-variable will take precedence; if this is unwanted please unset VAULT_TOKEN or
-
-update its value accordingly.
-
-Success! You are now authenticated. The token information displayed below
-
-is already stored in the token helper. You do NOT need to run "vault login"
-
-again. Future Vault requests will automatically use this token.
+Success! You are now authenticated. The token information displayed below is already stored in the token helper. You do NOT need to run "vault login" again. Future Vault requests will automatically use this token.
 
 Key Value
-
-\--- -----
-
+--- -----
 token root
-
-token_accessor PUKKWyUaxEcJejgkKvOcRgmG
-
+token_accessor <REDACTED>
 token_duration ∞
-
 token_renewable false
-
-token_policies \["root"\]
-
-identity_policies \[\]
-
-policies \["root"\]
-
-vault secrets enable -address=<http://localhost:8200/> -path=mash-auth \\
-
-\-allowed-response-headers="X-Total-Count" \\
-
-\-allowed-response-headers="X-Mashery-Responder" \\
-
-\-allowed-response-headers="X-Server-Date" \\
-
-\-allowed-response-headers="X-Proxy-Mode" \\
-
-\-allowed-response-headers="WWW-Authenticate" \\
-
-\-allowed-response-headers="X-Mashery-Error-Code" \\
-
-\-allowed-response-headers="X-Mashery-Responder" \\
+token_policies ["root"]
+identity_policies []
+policies ["root"]
+vault secrets enable -address=<http://localhost:8200/> -path=mash-auth \
+  -allowed-response-headers="X-Total-Count" \
+  -allowed-response-headers="X-Mashery-Responder" \
+  -allowed-response-headers="X-Server-Date" \
+  -allowed-response-headers="X-Proxy-Mode" \
+  -allowed-response-headers="WWW-Authenticate" \
+  -allowed-response-headers="X-Mashery-Error-Code" \
+  -allowed-response-headers="X-Mashery-Responder" \
 
 hcvault-mashery-api-auth_v0.5
 
 Success! Enabled the hcvault-mashery-api-auth_v0.5 secrets engine at: mash-auth/
-
 vault write -address=<http://localhost:8200/> mash-auth/roles/demoRole area_id=abc area_nid=10 username=user password=password api_key=apiKey secret=secret
-
 Success! Data written to: mash-auth/roles/demoRole
-
 vault policy write -address=<http://localhost:8200/> agent-mcc ./samples/agent/grant_demoRole_policy.hcl
-
 Success! Uploaded policy: agent-mcc
-
 vault auth enable -address=<http://localhost:8200/> approle
-
 Success! Enabled approle auth method at: approle/
-
 vault write -address=<http://localhost:8200/> auth/approle/role/agent-demoRole token_policies=agent-mcc
-
 Success! Data written to: auth/approle/role/agent-demoRole
-
 if \[ ! -d ./.secrets \]; then mkdir .secrets > /dev/null; fi
-
 vault read -address=<http://localhost:8200/> -format=json auth/approle/role/agent-demoRole/role-id | jq -r .data.role_id > ./.secrets/role-id.txt
-
 vault write -address=<http://localhost:8200/> -format=json -f auth/approle/role/agent-demoRole/secret-id | jq -r .data.secret_id > ./.secrets/secret-id.txt
-
 ```
 
 
@@ -233,29 +179,17 @@ Example:
 $ vault status
 
 Key Value
-
-\--- -----
-
+--- -----
 Seal Type shamir
-
 Initialized true
-
 Sealed false
-
 Total Shares 1
-
 Threshold 1
-
 Version 1.15.6
-
 Build Date 2024-02-28T17:07:34Z
-
 Storage Type inmem
-
 Cluster Name vault-cluster-c6fb586f
-
 Cluster ID db5eda68-6647-afc3-4e07-c5dcd538f108
-
 HA Enabled false
 
 ```
@@ -293,17 +227,12 @@ Example:
 $ vault read mash-auth/roles/demo/token
 
 Key Value
-
-\--- -----
+--- -----
 
 access_token 2q2eempr48h\*\*\*\*d5xtq7my
-
 expiry 2024-03-22T18:56:37Z
-
 expiry_epoch 1711133797
-
 qps 2
-
 token_time_remaining 3600
 
 ```
@@ -317,27 +246,18 @@ To use the Mashery Terraform Provider you need to configure the provider like su
 
 ```
 variable "vault_url" {
-
-default = "**<http://localhost:8200>**"
-
-description = "Vault URL to read data the data from; defaults to the development server."
-
+  default = "**<http://localhost:8200>**"
+  description = "Vault URL to read data the data from; defaults to the development server."
 }
 
 variable "vault_role" {
-
-default = "**demo**"
-
-description = "Vault secret engine role to use"
-
+  default = "**demo**"
+  description = "Vault secret engine role to use"
 }
 
 variable "traffic_manager_domain" {
-
-default = "presalesemeanorth2.api.mashery.com"
-
-description = "Mashery Traffic Manager domain"
-
+  default = "presalesemeanorth2.api.mashery.com"
+  description = "Mashery Traffic Manager domain"
 }
 
 
@@ -347,31 +267,19 @@ description = "Mashery Traffic Manager domain"
 
 ```
 terraform {
-
-required_providers {
-
-mashery = {
-
-version = "0.5"
-
-source = "github.com/aliakseiyanchuk/mashery"
-
-}
-
-}
-
+  required_providers {
+    mashery = {
+      version = "0.5"
+      source = "github.com/aliakseiyanchuk/mashery"
+    }
+  }
 }
 
 provider "mashery" {
-
-vault_addr = var.vault_url
-
-vault_mount = "mash-auth"
-
-role = var.vault_role
-
-qps = 1
-
+  vault_addr = var.vault_url
+  vault_mount = "mash-auth"
+  role = var.vault_role
+  qps = 1
 }
 
 ```
@@ -390,71 +298,40 @@ export TF_MASHERY_VAULT_TOKEN=&lt;<shared-token&gt;>
 
 
 ```
-
 data "mashery_organization" "tf_org" {
-
-search = {
-
-"name": "Terraform"
-
-}
-
+  search = {
+    "name": "Terraform"
+  }
 }
 
 resource "mashery_service" "srv" {
-
-name_prefix="tf-debug"
-
-iodocs_accessed_by = toset(\[data.mashery_role.internal_dev.id\])
-
-organization = data.mashery_organization.tf_org.id
-
-description = "this service was created by Terraform Mashery Provider"
-
-version = "1.0"
-
-qps_limit_overall = 10
-
+  name_prefix="tf-debug"
+  iodocs_accessed_by = toset(\[data.mashery_role.internal_dev.id\])
+  organization = data.mashery_organization.tf_org.id
+  description = "this service was created by Terraform Mashery Provider"
+  version = "1.0"
+  qps_limit_overall = 10
 }
 
 resource "mashery_service_endpoint" "endp" {
-
-\# An endpoint belongs to the service
-
-service_ref = mashery_service.srv.id
-
-name = "service-endpoint-1"
-
-request_authentication_type = "apiKey"
-
-developer_api_key_locations = \["request-header"\]
-
-request_path_alias = "/echo-get"
-
-supported_http_methods = \["get"\]
-
-system_domains = \["postman-echo.com"\]
-
-public_domains = \["presalesemeanorth2.api.mashery.com"\]
-
-developer_api_key_field_name = "X-Api-Key"
-
-traffic_manager_domain = var.traffic_manager_domain
-
-inbound_mutual_ssl_required = false
-
-inbound_ssl_required = false
-
-outbound_request_target_path = "/get"
-
-outbound_request_target_query_parameters = "a=b"
-
-outbound_transport_protocol = "http"
-
-connection_timeout_for_system_domain_request = 2
-
-connection_timeout_for_system_domain_response = 300
-
+  # An endpoint belongs to the service
+  service_ref = mashery_service.srv.id
+  name = "service-endpoint-1"
+  request_authentication_type = "apiKey"
+  developer_api_key_locations = \["request-header"\]
+  request_path_alias = "/echo-get"
+  supported_http_methods = \["get"\]
+  system_domains = \["postman-echo.com"\]
+  public_domains = \["presalesemeanorth2.api.mashery.com"\]
+  developer_api_key_field_name = "X-Api-Key"
+  traffic_manager_domain = var.traffic_manager_domain
+  inbound_mutual_ssl_required = false
+  inbound_ssl_required = false
+  outbound_request_target_path = "/get"
+  outbound_request_target_query_parameters = "a=b"
+  outbound_transport_protocol = "http"
+  connection_timeout_for_system_domain_request = 2
+  connection_timeout_for_system_domain_response = 300
 }
 
 ```
@@ -469,23 +346,13 @@ Initializing the backend...
 
 Initializing provider plugins...
 
-\- Reusing previous version of github.com/aliakseiyanchuk/mashery from the dependency lock file
+- Reusing previous version of github.com/aliakseiyanchuk/mashery from the dependency lock file
 
-\- Using previously-installed github.com/aliakseiyanchuk/mashery v0.5.0
+- Using previously-installed github.com/aliakseiyanchuk/mashery v0.5.0
 
 Terraform has been successfully initialized!
-
-You may now begin working with Terraform. Try running "terraform plan" to see
-
-any changes that are required for your infrastructure. All Terraform commands
-
-should now work.
-
-If you ever set or change modules or backend configuration for Terraform,
-
-rerun this command to reinitialize your working directory. If you forget, other
-
-commands will detect it and remind you to do so if necessary
+You may now begin working with Terraform. Try running "terraform plan" to see any changes that are required for your infrastructure. All Terraform commands should now work. 
+If you ever set or change modules or backend configuration for Terraform, rerun this command to reinitialize your working directory. If you forget, other commands will detect it and remind you to do so if necessary
 
 ```
 
