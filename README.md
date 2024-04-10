@@ -1,14 +1,14 @@
-Using Terraform for IaaC with APIM
+[![terraform-github-push-actions](https://github.com/mmussett/mashery-tf/actions/workflows/tf-push-action.yml/badge.svg)](https://github.com/mmussett/mashery-tf/actions/workflows/tf-push-action.yml)
 
-version 0.1
+# Using Terraform for IaaC with APIM
+
+## version 0.1
 
 #
 
-# Building and Installation
+## Building and Installation
 
-##
-
-## Pre-requisites
+### Pre-requisites
 
 The solution was tested on Ubuntu Linux 22.04 but should in theory work on Mac or Windows.
 
