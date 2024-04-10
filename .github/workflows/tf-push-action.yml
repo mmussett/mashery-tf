@@ -2,26 +2,17 @@ name: terraform-github-push-actions
 run-name: ${{ github.actor }} running terraform apply
 on: [push]
 jobs:
-  terraform-apply:
+  terraform:
     env:
       TF_MASHERY_VAULT_TOKEN: 'root'
     runs-on: [self-hosted, linux, x64]
     steps:
+    - uses: TooMuch4U/actions-clean@v2.1
     - name: Checkout the repository to the self-hosted runner
       uses: actions/checkout@v4
     - name: Terraform Init
-      run: terraform init -force-copy
-    - name: Terraform Destroy Plan
-      run: terraform plan -destroy --out=tf-destroy.plan
-    - name: Terraform Apply Destroy Plan
-      run: terraform apply -auto-approve tf-destroy.plan
+      run: terraform init
     - name: Terraform Create Plan
       run: terraform plan --out=tf-create.plan
     - name: Terraform Apply Create Plan
       run: terraform apply -auto-approve tf-create.plan
-    - name: Cleanup build folder
-      run: |
-        ls -la ./
-        rm -rf ./* || true
-        rm -rf ./.??* || true
-        ls -la ./
