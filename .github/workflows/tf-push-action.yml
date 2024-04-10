@@ -11,8 +11,12 @@ jobs:
       uses: actions/checkout@v4
     - name: Terraform Init
       run: terraform init -force-copy
-    - name: Terraform Plan
-      run: terraform plan -destroy --out=tf.plan
-    - name: Terraform Apply
-      run: terraform apply -auto-approve tf.plan
+    - name: Terraform Destroy Plan
+      run: terraform plan -destroy --out=tf-destroy.plan
+    - name: Terraform Apply Destroy Plan
+      run: terraform apply -auto-approve tf-destroy.plan
+    - name: Terraform Create Plan
+      run: terraform plan --out=tf-create.plan
+    - name: Terraform Apply Create Plan
+      run: terraform apply -auto-approve tf-create.plan
       
