@@ -4,7 +4,7 @@ on: [push]
 jobs:
   terraform:
     env:
-      TF_MASHERY_VAULT_TOKEN: 'root'
+      TF_MASHERY_VAULT_TOKEN: ${{secrets.TF_MASHERY_VAULT_TOKEN}}
     runs-on: [self-hosted, linux, x64]
     steps:
     - uses: TooMuch4U/actions-clean@v2.1
