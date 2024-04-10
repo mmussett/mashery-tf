@@ -5,4 +5,7 @@ jobs:
   terraform-apply:
     runs-on: [self-hosted, linux, x64]
     steps:
-    - run: echo Hello world!
+    - name: Checkout the repository to the self-hosted runner
+      uses: actions/checkout@v4
+    - name: Echo something
+      run: echo Hello world!
