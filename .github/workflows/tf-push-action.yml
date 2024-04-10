@@ -19,4 +19,9 @@ jobs:
       run: terraform plan --out=tf-create.plan
     - name: Terraform Apply Create Plan
       run: terraform apply -auto-approve tf-create.plan
-      
+    - name: Cleanup build folder
+      run: |
+        ls -la ./
+        rm -rf ./* || true
+        rm -rf ./.??* || true
+        ls -la ./
