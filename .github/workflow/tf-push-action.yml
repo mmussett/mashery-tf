@@ -1,8 +1,0 @@
-name: terraform-github-push-actions
-run-name: ${{ github.actor }} running terraform apply
-on: [push]
-jobs:
-  terraform-apply:
-    runs-on: [self-hosted, linux, x64]
-    steps:
-    - run: echo Hello world!
