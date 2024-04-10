@@ -246,12 +246,12 @@ To use the Mashery Terraform Provider you need to configure the provider like su
 
 ```
 variable "vault_url" {
-  default = "**<http://localhost:8200>**"
+  default = "http://localhost:8200"
   description = "Vault URL to read data the data from; defaults to the development server."
 }
 
 variable "vault_role" {
-  default = "**demo**"
+  default = "demo"
   description = "Vault secret engine role to use"
 }
 
@@ -288,7 +288,7 @@ provider "mashery" {
 To execute any Terraform scripts you must make sure that the Vault Token is set in the environment.
 
 ```
-export TF_MASHERY_VAULT_TOKEN=&lt;<shared-token&gt;>
+export TF_MASHERY_VAULT_TOKEN=<shared-token>
 ```
 
 
