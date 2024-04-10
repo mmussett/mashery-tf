@@ -25,7 +25,7 @@ resource "mashery_service_endpoint" "endp" {
   name                        = "service-endpoint-1"
   request_authentication_type = "apiKey"
   developer_api_key_locations = ["request-header"]
-  request_path_alias          = "/echo/get"
+  request_path_alias          = "/v1/echo/get"
   supported_http_methods      = ["get"]
   system_domains              = ["postman-echo.com"]
   public_domains              = ["presalesemeanorth2.api.mashery.com"]
