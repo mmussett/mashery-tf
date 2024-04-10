@@ -4,8 +4,6 @@ on: [push]
 jobs:
   terraform-apply:
     env:
-      VAULT_ADDR: 'http://127.0.0.1:8200'
-      VAULT_TOKEN: 'root'
       TF_MASHERY_VAULT_TOKEN: 'root'
     runs-on: [self-hosted, linux, x64]
     steps:
@@ -16,5 +14,5 @@ jobs:
     - name: Terraform Plan
       run: terraform plan
     - name: Terraform Apply
-      run: terraform apply
+      run: terraform apply -auto-approve
       
