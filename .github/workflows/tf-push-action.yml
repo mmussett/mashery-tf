@@ -10,9 +10,9 @@ jobs:
     - name: Checkout the repository to the self-hosted runner
       uses: actions/checkout@v4
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -force-copy
     - name: Terraform Plan
-      run: terraform plan --out=tf.plan
+      run: terraform plan -destroy --out=tf.plan
     - name: Terraform Apply
       run: terraform apply -auto-approve tf.plan
       
