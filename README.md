@@ -1,10 +1,7 @@
 [![terraform-github-push-actions](https://github.com/mmussett/mashery-tf/actions/workflows/tf-push-action.yml/badge.svg)](https://github.com/mmussett/mashery-tf/actions/workflows/tf-push-action.yml)
 
 # Using Terraform for IaaC with APIM
-
-## version 0.1
-
-#
+version 0.1
 
 ## Building and Installation
 
