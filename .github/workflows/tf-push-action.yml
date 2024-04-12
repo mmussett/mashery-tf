@@ -5,7 +5,7 @@ jobs:
   terraform:
     env:
       TF_MASHERY_VAULT_TOKEN: ${{secrets.TF_MASHERY_VAULT_TOKEN}}
-    runs-on: [self-hosted, linux, x64, terraform, mashery]
+    runs-on: [self-hosted, linux, x64]
     steps:
     - uses: TooMuch4U/actions-clean@v2.1
     - name: Checkout the repository to the self-hosted runner
