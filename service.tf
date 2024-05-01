@@ -11,7 +11,7 @@ data "mashery_organization" "tf_org" {
 }
 
 resource "mashery_service" "srv" {
-  name_prefix="tf-test"
+  name="echo-test"
   iodocs_accessed_by = toset([data.mashery_role.internal_dev.id])
   organization = data.mashery_organization.tf_org.id
   description = "this service was created by Terraform Mashery Provider"
@@ -22,10 +22,10 @@ resource "mashery_service" "srv" {
 resource "mashery_service_endpoint" "endp" {
   # An endpoint belongs to the service
   service_ref                 = mashery_service.srv.id
-  name                        = "service-endpoint-1"
+  name                        = "echo-get-endpoint"
   request_authentication_type = "apiKey"
   developer_api_key_locations = ["request-header"]
-  request_path_alias          = "/tf/echo/get"
+  request_path_alias          = "/v2/echo/get"
   supported_http_methods      = ["get"]
   system_domains              = ["postman-echo.com"]
   public_domains              = ["presalesemeanorth2.api.mashery.com"]
@@ -38,7 +38,7 @@ resource "mashery_service_endpoint" "endp" {
 
   outbound_request_target_path             = "/get"
   outbound_request_target_query_parameters = "a=b"
-  outbound_transport_protocol              = "http"
+  outbound_transport_protocol              = "https"
 
   connection_timeout_for_system_domain_request = 2
   connection_timeout_for_system_domain_response = 300
